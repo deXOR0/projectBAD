@@ -5,12 +5,15 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
+import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -30,6 +33,7 @@ public class MainMenu extends JFrame implements ActionListener{
 	private String userID, role;
 	
 	MainMenu(String userID, String role) {
+		
 //		System.out.print(userID);
 		
 		this.userID = userID;
@@ -124,8 +128,25 @@ public class MainMenu extends JFrame implements ActionListener{
 			}
 		});
 		
-		
+		//Internal Frame <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+		JInternalFrame intFrame = new JInternalFrame("internal frame",true,true,true,true);
+		setLayout(null);
+		add(intFrame);
+		try {
+			intFrame.setMaximum(true);
+		} catch (PropertyVetoException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		intFrame.setSize(1340,745);
+		intFrame.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+		intFrame.setLocation(0, 0);
+		intFrame.setVisible(true);
+		//
 	}
+
+
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
