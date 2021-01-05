@@ -143,7 +143,7 @@ public class Login extends JFrame implements ActionListener{
 		String emailOrPhone = emailOrPhoneTextField.getText();
 		String password = String.valueOf(passwordField.getPassword());
 		
-		con.rs = con.execQuery("SELECT UserID, UserFullName, UserPassword FROM users WHERE UserEmail = '" + emailOrPhone + "' OR UserPhone = '" + emailOrPhone + "'");
+		con.rs = con.execQuery("SELECT UserID, UserFullName, UserPassword, UserRole FROM users WHERE UserEmail = '" + emailOrPhone + "' OR UserPhone = '" + emailOrPhone + "'");
 		
 		if (con.rs == null) {
 			return null;
@@ -154,9 +154,10 @@ public class Login extends JFrame implements ActionListener{
 				try {
 					String inputPassword = String.valueOf(con.rs.getObject(3));
 					if (password.equals(inputPassword)) {
-						String[] value = new String[2];
+						String[] value = new String[3];
 						value[0] = String.valueOf(con.rs.getObject(1));
 						value[1] = String.valueOf(con.rs.getObject(2));
+						value[2] = String.valueOf(con.rs.getObject(4));
 						return value;
 					}
 				} catch (SQLException e) {
@@ -177,9 +178,9 @@ public class Login extends JFrame implements ActionListener{
 		Register register = new Register();
 	}
 	
-	private void redirectToMainMenu() {
+	private void redirectToMainMenu(String userID, String role) {
 		dispose();
-		MainMenu mainMenu = new MainMenu();
+		MainMenu mainMenu = new MainMenu(userID, role);
 	}
 	
 	@Override
@@ -191,8 +192,7 @@ public class Login extends JFrame implements ActionListener{
 				if (user != null) {					
 					JOptionPane.showMessageDialog(null, "Login Success, Welcome, " + user[1] + "!");
 					// Redirect here, pass user id
-					redirectToMainMenu();
-					
+					redirectToMainMenu(user[0].toString(), user[2].toString());
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Login Failed!","Warning Message",JOptionPane.WARNING_MESSAGE); 
