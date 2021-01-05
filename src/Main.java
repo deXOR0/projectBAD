@@ -18,49 +18,40 @@ public class Main implements ActionListener{
 	
 	public Main() {
 		
-//		// Frame initialization
-//		frame.setTitle("My Application");
-//		frame.setSize(300, 150);
-//		frame.setLocationRelativeTo(null);
-//		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
-//		frame.setVisible(true);
-//		
-//		register();
-		
 		Login login = new Login();
 		
 	}
 	
-	void register() {
-		
-		
-		//Component initialization
-		usernameLabel = new JLabel("Username");
-		passwordLabel = new JLabel("Password");
-		registerLabel = new JLabel("Register", JLabel.CENTER);
-		registerButton = new JButton("Submit");
-		registerButton.addActionListener(this);
-		
-		usernameField = new JTextField();
-		passwordField = new JPasswordField();
-		
-		//Panel initialization
-		registerPanel = new JPanel(new GridLayout(2,2));
-		
-		registerPanel.add(usernameLabel);
-		registerPanel.add(usernameField);
-		registerPanel.add(passwordLabel);
-		registerPanel.add(passwordField);
-		
-		frame.setTitle("Register");
-		frame.setLayout(new BorderLayout());
-		frame.add(registerLabel, BorderLayout.NORTH);
-		frame.add(registerPanel, BorderLayout.CENTER);
-		frame.add(registerButton, BorderLayout.SOUTH);
-		
-		frame.setVisible(true);
-		
-	}
+//	void register() {
+//		
+//		
+//		//Component initialization
+//		usernameLabel = new JLabel("Username");
+//		passwordLabel = new JLabel("Password");
+//		registerLabel = new JLabel("Register", JLabel.CENTER);
+//		registerButton = new JButton("Submit");
+//		registerButton.addActionListener(this);
+//		
+//		usernameField = new JTextField();
+//		passwordField = new JPasswordField();
+//		
+//		//Panel initialization
+//		registerPanel = new JPanel(new GridLayout(2,2));
+//		
+//		registerPanel.add(usernameLabel);
+//		registerPanel.add(usernameField);
+//		registerPanel.add(passwordLabel);
+//		registerPanel.add(passwordField);
+//		
+//		frame.setTitle("Register");
+//		frame.setLayout(new BorderLayout());
+//		frame.add(registerLabel, BorderLayout.NORTH);
+//		frame.add(registerPanel, BorderLayout.CENTER);
+//		frame.add(registerButton, BorderLayout.SOUTH);
+//		
+//		frame.setVisible(true);
+//		
+//	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

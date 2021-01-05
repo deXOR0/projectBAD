@@ -44,7 +44,6 @@ public class Login extends JFrame implements ActionListener{
 		
 		inputPanel = new JPanel(new BorderLayout());
 		inputPanel.setBorder(new EmptyBorder(15, 0, 0, 0));
-		inputPanel.setBackground(Color.decode("#00FFFF"));
 		
 		emailPanel = new JPanel(new GridLayout(1, 2));
 		emailPanel.setBorder(new EmptyBorder(0, 0, 10, 0));
@@ -104,6 +103,7 @@ public class Login extends JFrame implements ActionListener{
 		
 		// Set color
 		formPanel.setBackground(Color.decode("#00FFFF"));
+		inputPanel.setBackground(Color.decode("#00FFFF"));
 		emailPanel.setBackground(Color.decode("#00FFFF"));
 		emailLabelPanel.setBackground(Color.decode("#00FFFF"));
 		emailTextPanel.setBackground(Color.decode("#00FFFF"));

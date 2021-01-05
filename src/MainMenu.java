@@ -23,9 +23,14 @@ public class MainMenu extends JFrame implements ActionListener{
 	JMenu menuUser, menuTransaction, menuManage;
 	JMenuItem mItemProfile, mItemLogoff, mItemExit, mItemBuyFish, mItemTrxHistory, mItemManageFish;
 	
+	private String userID, role;
 	
 	MainMenu(String userID, String role) {
-		System.out.print(userID);
+//		System.out.print(userID);
+		
+		this.userID = userID;
+		this.role = role;
+		
 		formPanel = new JPanel();
 		
 		img = new ImageIcon("bg.png");
