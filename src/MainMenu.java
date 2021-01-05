@@ -1,10 +1,14 @@
+import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,7 +22,7 @@ public class MainMenu extends JFrame implements ActionListener{
 
 	
 	JPanel formPanel;
-	ImageIcon img;
+	Image img;
 	JMenuBar menuBar;
 	JMenu menuUser, menuTransaction, menuManage;
 	JMenuItem mItemProfile, mItemLogoff, mItemExit, mItemBuyFish, mItemTrxHistory, mItemManageFish;
@@ -33,20 +37,31 @@ public class MainMenu extends JFrame implements ActionListener{
 		
 		formPanel = new JPanel();
 		
-		img = new ImageIcon("bg.png");
+		// Draw background
+		try {
+			img = ImageIO.read(new File("bg-resized.png"));
+			setContentPane(new JPanel(new BorderLayout()) {
+		        @Override public void paintComponent(Graphics g) {
+		            g.drawImage(img, 0, 0, null);
+		        }
+		    });
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		add(formPanel);
 		setLayout(null);
 		setTitle("Fish Shop");
-		setSize(623, 348);
+		setSize(1370, 765);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
 		setVisible(true);
 		
-		JLabel background = new JLabel("", img, JLabel.CENTER);
-		background.setBounds(0, 0, 623, 338);
-		add(background);
+//		JLabel background = new JLabel("", img, JLabel.CENTER);
+//		background.setBounds(0, 0, 623 * 2, 338 * 2);
+//		add(background);
 		
 		menuBar = new JMenuBar();
 		
@@ -111,8 +126,6 @@ public class MainMenu extends JFrame implements ActionListener{
 		
 		
 	}
-	
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
