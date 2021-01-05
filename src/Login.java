@@ -177,6 +177,11 @@ public class Login extends JFrame implements ActionListener{
 		Register register = new Register();
 	}
 	
+	private void redirectToMainMenu() {
+		dispose();
+		MainMenu mainMenu = new MainMenu();
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent a) {
 		// TODO Auto-generated method stub
@@ -186,6 +191,8 @@ public class Login extends JFrame implements ActionListener{
 				if (user != null) {					
 					JOptionPane.showMessageDialog(null, "Login Success, Welcome, " + user[1] + "!");
 					// Redirect here, pass user id
+					redirectToMainMenu();
+					
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Login Failed!","Warning Message",JOptionPane.WARNING_MESSAGE); 
