@@ -32,6 +32,11 @@ public class MainMenu extends JFrame implements ActionListener{
 	
 	private String userID, role;
 	
+	Profile profile;
+	BuyFish buyFish;
+	ViewTransaction viewTransaction;
+	ManageFish manageFish;
+	
 	MainMenu(String userID, String role) {
 		
 //		System.out.print(userID);
@@ -63,10 +68,6 @@ public class MainMenu extends JFrame implements ActionListener{
 		setResizable(false);
 		setVisible(true);
 		
-//		JLabel background = new JLabel("", img, JLabel.CENTER);
-//		background.setBounds(0, 0, 623 * 2, 338 * 2);
-//		add(background);
-		
 		menuBar = new JMenuBar();
 		
 		//Menu User
@@ -86,6 +87,22 @@ public class MainMenu extends JFrame implements ActionListener{
 			mItemManageFish = new JMenuItem("Manage Fish");
 			menuManage.add(mItemManageFish);
 			menuBar.add(menuManage);
+			
+			mItemManageFish.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					
+					closeAllInternalFrame(); // Close other internalFrame
+					
+					// TODO Auto-generated method stub
+					manageFish = new ManageFish(); // Create profile instance
+					setLayout(null); // Prepare frame
+					add(manageFish.intFrame); // Add internalFrame to frame
+					manageFish.intFrame.setVisible(true); // Set internalFrame to visible
+				}
+			});
+			
 			break;
 		case "User" :
 			//Menu Transaction
@@ -95,6 +112,37 @@ public class MainMenu extends JFrame implements ActionListener{
 			menuTransaction.add(mItemBuyFish);
 			menuTransaction.add(mItemTrxHistory);		
 			menuBar.add(menuTransaction);
+			
+			mItemBuyFish.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					
+					closeAllInternalFrame(); // Close other internalFrame
+					
+					// TODO Auto-generated method stub
+					buyFish = new BuyFish(); // Create profile instance
+					setLayout(null); // Prepare frame
+					add(buyFish.intFrame); // Add internalFrame to frame
+					buyFish.intFrame.setVisible(true); // Set internalFrame to visible
+				}
+			});
+			
+			mItemTrxHistory.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					
+					closeAllInternalFrame(); // Close other internalFrame
+					
+					// TODO Auto-generated method stub
+					viewTransaction = new ViewTransaction(); // Create profile instance
+					setLayout(null); // Prepare frame
+					add(viewTransaction.intFrame); // Add internalFrame to frame
+					viewTransaction.intFrame.setVisible(true); // Set internalFrame to visible
+				}
+			});
+			
 			break;
 		}
 		
@@ -105,7 +153,13 @@ public class MainMenu extends JFrame implements ActionListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// redirect to menu profile
+
+				closeAllInternalFrame(); // Close other internalFrame
 				
+				profile = new Profile(); // Create profile instance
+				setLayout(null); // Prepare frame
+				add(profile.intFrame); // Add internalFrame to frame
+				profile.intFrame.setVisible(true); // Set internalFrame to visible
 			}
 		});
 		
@@ -128,24 +182,30 @@ public class MainMenu extends JFrame implements ActionListener{
 			}
 		});
 		
-		//Internal Frame <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-		JInternalFrame intFrame = new JInternalFrame("internal frame",true,true,true,true);
-		setLayout(null);
-		add(intFrame);
-		try {
-			intFrame.setMaximum(true);
-		} catch (PropertyVetoException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		intFrame.setSize(1340,745);
-		intFrame.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
-		intFrame.setLocation(0, 0);
-		intFrame.setVisible(true);
-		//
+		
 	}
 
-
+	private void closeAllInternalFrame() {
+		try {
+			profile.intFrame.dispose();
+		} catch (Exception e) {
+		}
+		
+		try {
+			buyFish.intFrame.dispose();			
+		} catch (Exception e) {
+		}
+		
+		try {			
+			viewTransaction.intFrame.dispose();
+		} catch (Exception e) {
+		}
+		
+		try {
+			manageFish.intFrame.dispose();
+		} catch (Exception e) {
+		}
+	}
 
 
 	@Override
