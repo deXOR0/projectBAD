@@ -4,10 +4,15 @@ import javax.swing.JInternalFrame;
 
 public class ViewTransaction {
 	
-	public JInternalFrame intFrame = new JInternalFrame("View Transaction",true,true,true,true);
+	public JInternalFrame intFrame;
 
 	public ViewTransaction() {
 
+		intFrame = new JInternalFrame("View Transaction",true,true,true,true);
+		
+	}
+	
+	public void setInternalFrame() {
 		try {
 			intFrame.setMaximum(true);
 		} catch (PropertyVetoException e1) {

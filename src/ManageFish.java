@@ -4,10 +4,15 @@ import javax.swing.JInternalFrame;
 
 public class ManageFish {
 	
-	public JInternalFrame intFrame = new JInternalFrame("Manage Fish Form",true,true,true,true);
+	public JInternalFrame intFrame;
 
 	public ManageFish() {
 		
+		intFrame = new JInternalFrame("Manage Fish Form",true,true,true,true);
+		
+	}
+	
+	public void setInternalFrame() {
 		try {
 			intFrame.setMaximum(true);
 		} catch (PropertyVetoException e1) {

@@ -97,8 +97,8 @@ public class MainMenu extends JFrame implements ActionListener{
 					
 					// TODO Auto-generated method stub
 					manageFish = new ManageFish(); // Create profile instance
-					setLayout(null); // Prepare frame
 					add(manageFish.intFrame); // Add internalFrame to frame
+					manageFish.setInternalFrame();
 					manageFish.intFrame.setVisible(true); // Set internalFrame to visible
 				}
 			});
@@ -122,8 +122,8 @@ public class MainMenu extends JFrame implements ActionListener{
 					
 					// TODO Auto-generated method stub
 					buyFish = new BuyFish(); // Create profile instance
-					setLayout(null); // Prepare frame
 					add(buyFish.intFrame); // Add internalFrame to frame
+					buyFish.setInternalFrame();
 					buyFish.intFrame.setVisible(true); // Set internalFrame to visible
 				}
 			});
@@ -137,8 +137,8 @@ public class MainMenu extends JFrame implements ActionListener{
 					
 					// TODO Auto-generated method stub
 					viewTransaction = new ViewTransaction(); // Create profile instance
-					setLayout(null); // Prepare frame
 					add(viewTransaction.intFrame); // Add internalFrame to frame
+					viewTransaction.setInternalFrame();
 					viewTransaction.intFrame.setVisible(true); // Set internalFrame to visible
 				}
 			});
@@ -157,8 +157,8 @@ public class MainMenu extends JFrame implements ActionListener{
 				closeAllInternalFrame(); // Close other internalFrame
 				
 				profile = new Profile(); // Create profile instance
-				setLayout(null); // Prepare frame
 				add(profile.intFrame); // Add internalFrame to frame
+				profile.setInternalFrame();
 				profile.intFrame.setVisible(true); // Set internalFrame to visible
 			}
 		});

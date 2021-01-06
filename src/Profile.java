@@ -4,10 +4,13 @@ import javax.swing.JInternalFrame;
 
 public class Profile {
 
-	public JInternalFrame intFrame = new JInternalFrame("Profile Form",true,true,true,true);
+	public JInternalFrame intFrame;
 
 	public Profile() {
-		
+		intFrame = new JInternalFrame("Profile Form",true,true,true,true);
+	}
+	
+	public void setInternalFrame() {
 		try {
 			intFrame.setMaximum(true);
 		} catch (PropertyVetoException e1) {

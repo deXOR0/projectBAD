@@ -4,10 +4,13 @@ import javax.swing.JInternalFrame;
 
 public class BuyFish {
 	
-	public JInternalFrame intFrame = new JInternalFrame("Buy Fish Form",true,true,true,true);
+	public JInternalFrame intFrame;
 
 	public BuyFish() {
-		
+		intFrame = new JInternalFrame("Buy Fish Form",true,true,true,true);
+	}
+	
+	public void setInternalFrame() {
 		try {
 			intFrame.setMaximum(true);
 		} catch (PropertyVetoException e1) {
