@@ -6,6 +6,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.JOptionPane;
+
 public class Connect {
 	
 	public Statement stat;
@@ -57,6 +59,22 @@ public class Connect {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	public void closeConnection() {
+		try {
+			if(stat!=null) {
+				stat.close();
+				stat=null;
+			}
+			if(con!=null) {
+				con.close();
+				con=null;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			JOptionPane.showMessageDialog(null, e);
 		}
 	}
 
