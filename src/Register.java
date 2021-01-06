@@ -319,6 +319,15 @@ public class Register extends JFrame implements ActionListener{
 		
 	}
 	
+	private boolean allDigits(String s) {
+		for (int i = 0; i < s.length(); i++) {
+			if (!Character.isDigit(s.charAt(i))) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	private boolean validatePhone() {
 		phone = phoneTextField.getText().trim();
 		
@@ -327,7 +336,7 @@ public class Register extends JFrame implements ActionListener{
 			return false;
 		}
 		else {
-			if (phone.length() < 10 || phone.length() > 12) {
+			if ((phone.length() < 10 || phone.length() > 12) && allDigits(phone)) {
 				JOptionPane.showMessageDialog(null, "Please fill with valid phone number!","Warning Message",JOptionPane.WARNING_MESSAGE);
 				return false;
 			}

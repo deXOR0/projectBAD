@@ -77,5 +77,43 @@ public class Connect {
 			JOptionPane.showMessageDialog(null, e);
 		}
 	}
+	
+	public void updateUserData(String UserID, String UserFullName, String UserEmail, String UserPhone, String UserGender, String UserAddress) {
+		try {
+			pStat = con.prepareStatement("UPDATE `users` SET "
+					+ "`UserFullName` = ?,"
+					+ "`UserEmail` = ?,"
+					+ "`UserPhone` = ?,"
+					+ "`UserGender` = ?,"
+					+ "`UserAddress` = ? "
+					+ "WHERE `users`.`UserID` = ?");
+			pStat.setString(1, UserFullName);
+			pStat.setString(2, UserEmail);
+			pStat.setString(3, UserPhone);
+			pStat.setString(4, UserGender);
+			pStat.setString(5, UserAddress);
+			pStat.setString(6, UserID);
+			
+			pStat.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateUserPassword(String UserID, String UserPassword) {
+		try {
+			pStat = con.prepareStatement("UPDATE `users` SET "
+						+ "`UserPassword` = ?"
+						+ "WHERE `users`.`UserID` = ?");
+			pStat.setString(1, UserPassword);
+			pStat.setString(2, UserID);
+			
+			pStat.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }

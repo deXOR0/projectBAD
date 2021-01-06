@@ -156,7 +156,7 @@ public class MainMenu extends JFrame implements ActionListener{
 
 				closeAllInternalFrame(); // Close other internalFrame
 				
-				profile = new Profile(); // Create profile instance
+				profile = new Profile(userID); // Create profile instance
 				add(profile.intFrame); // Add internalFrame to frame
 				profile.setInternalFrame();
 				profile.intFrame.setVisible(true); // Set internalFrame to visible
