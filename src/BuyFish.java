@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
 import java.util.Vector;
 
@@ -19,9 +21,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
-public class BuyFish {
+public class BuyFish implements ActionListener{
 	
 	Connect con;
 	
@@ -42,7 +46,13 @@ public class BuyFish {
 	JTextField fishIDText, fishNameText, fishTypeText, fishPriceText, fishStockText, quantityText, removeIDText;
 	JSpinner quantitySpinner;
 	JButton addToCartButton, removeFishButton, clearCartButton, checkoutButton;
+	
+	DefaultTableModel dtmFish, dtm;
 
+	// Fish
+	private String fishID, fishName, fishType;
+	int fishPrice, quantity;
+	
 	public BuyFish() {
 		intFrame = new JInternalFrame("Buy Fish Form",true,true,true,true);
 	}
@@ -55,6 +65,34 @@ public class BuyFish {
 		row.add(fishPrice);
 		row.add(fishStock);
 		return row;
+	}
+	
+	private void addRowCartTable(String fishID, String fishName, String fishType, int fishPrice, int quantity){
+		int index = -1;
+		for (int j = 0; j < dtmFish.getRowCount(); j++) {
+			if (dtmFish.getValueAt(j, 0).equals(fishID)) {
+				index = j;
+			}
+		}
+		
+		for (int i = 0; i < dtm.getRowCount(); i++) {
+			if (dtm.getValueAt(i, 0).equals(fishID)) {
+				dtm.setValueAt(Integer.valueOf(Integer.valueOf(String.valueOf(dtm.getValueAt(i, 4))) + quantity), i, 4);
+				dtmFish.setValueAt(Integer.valueOf(Integer.valueOf(String.valueOf(dtmFish.getValueAt(index, 4))) - quantity), index, 4);
+				return;
+			}
+		}
+		
+		Vector<Object> row = new Vector<Object>();
+		row.add(fishID);
+		row.add(fishName);
+		row.add(fishType);
+		row.add(fishPrice);
+		row.add(quantity);
+		row.add(fishPrice * quantity);
+		
+		dtm.addRow(row);
+		dtmFish.setValueAt(Integer.valueOf(Integer.valueOf(String.valueOf(dtmFish.getValueAt(index, 4))) - quantity), index, 4);
 	}
 	
 	private void initDataFishTable(){
@@ -76,27 +114,46 @@ public class BuyFish {
 				String fishType = String.valueOf(con.rs.getObject(3));
 				int fishPrice = Integer.valueOf(String.valueOf(con.rs.getObject(4)));
 				int fishStock = Integer.valueOf(String.valueOf(con.rs.getObject(5)));
-
-				System.out.println(fishID);
 				
 				data.add(addRowFishTable(fishID, fishName, fishType, fishPrice, fishStock));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-//			JOptionPane.showMessageDialog(null, e);
 		}
 		
-//		con.closeConnection();
-		
-		fishTable.setModel(new DefaultTableModel(data,column) {
+		dtmFish = new DefaultTableModel(data,column) {
 
 		    @Override
 		    public boolean isCellEditable(int row, int column) {
 		       //all cells false
 		       return false;
 		    }
-		});
+		};
+		
+		fishTable.setModel(dtmFish);
+	}
+	
+	private void initDataCartTable(){
+		Vector<Object> column = new Vector<Object>();
+		column.add("FishID");
+		column.add("FishName");
+		column.add("FishType");
+		column.add("FishPrice");
+		column.add("Quantity");
+		column.add("SubTotal");
+		Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+		
+		dtm = new DefaultTableModel(data,column) {
+
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }
+		};
+		
+		cartTable.setModel(dtm);
 	}
 	
 	public void setInternalFrame() {
@@ -122,6 +179,16 @@ public class BuyFish {
 		
 		// Fish Table
 		fishTable = new JTable();	
+		fishTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+	        public void valueChanged(ListSelectionEvent event) {
+	            fishIDText.setText(fishTable.getValueAt(fishTable.getSelectedRow(), 0).toString());
+	            fishNameText.setText(fishTable.getValueAt(fishTable.getSelectedRow(), 1).toString());
+	            fishTypeText.setText(fishTable.getValueAt(fishTable.getSelectedRow(), 2).toString());
+	            fishPriceText.setText(fishTable.getValueAt(fishTable.getSelectedRow(), 3).toString());
+	            fishStockText.setText(fishTable.getValueAt(fishTable.getSelectedRow(), 4).toString());
+	        }
+	    });
+		
 		initDataFishTable();
 		fishTableScrollPane = new JScrollPane(fishTable);
 		fishTableScrollPane.setPreferredSize(new Dimension(500, 200));
@@ -243,6 +310,7 @@ public class BuyFish {
 		
 		addToCartButton = new JButton("Add to Cart");
 		addToCartButton.setPreferredSize(new Dimension(150, 30));
+		addToCartButton.addActionListener(this);
 		
 		addToCartButtonPanel.add(addToCartButton);
 		rightInputPanel.add(addToCartButtonPanel);
@@ -252,6 +320,12 @@ public class BuyFish {
 		
 		// Cart Table
 		cartTable = new JTable();
+		cartTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+	        public void valueChanged(ListSelectionEvent event) {
+	        	removeIDText.setText(cartTable.getValueAt(cartTable.getSelectedRow(), 0).toString());
+	        }
+	    });
+		initDataCartTable();
 		cartTableScrollPane = new JScrollPane(cartTable);
 		cartTableScrollPane.setPreferredSize(new Dimension(500, 200));
 
@@ -269,14 +343,17 @@ public class BuyFish {
 		
 		removeFishButton = new JButton("Remove Fish");
 		removeFishButton.setPreferredSize(new Dimension(180, 25));
+		removeFishButton.addActionListener(this);
 		removeFishButtonPanel.add(removeFishButton);
 		
 		clearCartButton = new JButton("Clear Cart");
 		clearCartButton.setPreferredSize(new Dimension(180, 25));
+		clearCartButton.addActionListener(this);
 		clearCartButtonPanel.add(clearCartButton);
 		
 		checkoutButton = new JButton("Checkout");
 		checkoutButton.setPreferredSize(new Dimension(180, 25));
+		checkoutButton.addActionListener(null);
 		checkoutButtonPanel.add(checkoutButton);
 		
 		bottomButtonPanel.add(removeFishButtonPanel);
@@ -324,6 +401,97 @@ public class BuyFish {
 		intFrame.setIconifiable(false);
 		intFrame.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
 		intFrame.setLocation(0, 0);
+	}
+	
+	private boolean fishSelected() {
+		fishID = fishIDText.getText();
+		
+		if (fishID.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Please choose a fish first!","Warning Message",JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+		
+		fishName = fishNameText.getText();
+		fishType = fishTypeText.getText();
+		fishPrice = Integer.valueOf(fishPriceText.getText());
+		
+		return true;
+		
+	}
+	
+	private boolean validQuantity() {
+		try {
+			quantitySpinner.commitEdit();
+		} catch ( java.text.ParseException e ) { 
+			
+		}
+		quantity = Integer.valueOf(String.valueOf(quantitySpinner.getValue()));
+		
+		int index = fishLookUp(fishID);
+		
+		if (quantity > Integer.valueOf(String.valueOf(dtmFish.getValueAt(index, 4)))) {
+			JOptionPane.showMessageDialog(null, "There is no more stock for this fish!","Warning Message",JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+		else if (quantity <= 0) {
+			JOptionPane.showMessageDialog(null, "Please enter a valid quantity!","Warning Message",JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+	
+	private int fishLookUp(String id) {
+		
+		int index = -1;
+		
+		for (int j = 0; j < dtmFish.getRowCount(); j++) {
+			if (dtmFish.getValueAt(j, 0).equals(fishID)) {
+				return j;
+			}
+		}
+		return -1;
+	}
+	
+	private int cartLookUp(String id) {
+		
+		int index = -1;
+		
+		for (int j = 0; j < dtm.getRowCount(); j++) {
+			if (dtm.getValueAt(j, 0).equals(fishID)) {
+				return j;
+			}
+		}
+		return -1;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent a) {
+		// TODO Auto-generated method stub
+		if (a.getSource() == addToCartButton) {
+			if (fishSelected()) { //validate
+//				System.out.println(fishID);
+//				System.out.println(fishLookUp(fishID));
+				if (validQuantity()) {
+					addRowCartTable(fishID, fishName, fishType, fishPrice, quantity);
+				}
+				
+			}
+		}
+		else if (a.getSource() == checkoutButton) {
+			// Add to database
+		}
+		else if (a.getSource() == removeFishButton) {
+			String id = removeIDText.getText();
+			int index = cartLookUp(id);
+			if (index >= 0) {				
+				dtm.removeRow(index);
+			}
+		}
+		else if (a.getSource() == clearCartButton) {
+			for (int i = 0; i < dtm.getRowCount(); i++) {
+				dtm.removeRow(i);
+			}
+		}
 	}
 
 }

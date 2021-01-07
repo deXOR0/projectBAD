@@ -115,5 +115,17 @@ public class Connect {
 			e.printStackTrace();
 		}
 	}
+	
+	public void deleteFish(String id) {
+		try {
+			pStat = con.prepareStatement("DELETE FROM fish WHERE FishID = ?");
+			pStat.setString(1, id);
+			
+			pStat.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }
